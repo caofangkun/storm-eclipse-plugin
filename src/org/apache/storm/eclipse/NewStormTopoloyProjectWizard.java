@@ -56,18 +56,10 @@ public class NewStormTopoloyProjectWizard extends Wizard implements
 					.runInUI(this.getContainer(), new IRunnableWithProgress() {
 						public void run(IProgressMonitor monitor) {
 							try {
-								monitor.beginTask("Create Hadoop Project", 300);
+								monitor.beginTask("Create Apache Storm Project", 300);
 
 								javaPage.getRunnable().run(
 										new SubProgressMonitor(monitor, 100));
-
-								// if( firstPage.generateDriver.getSelection())
-								// {
-								// newDriverPage.setPackageFragmentRoot(javaPage.getNewJavaProject().getAllPackageFragmentRoots()[0],
-								// false);
-								// newDriverPage.getRunnable().run(new
-								// SubProgressMonitor(monitor,100));
-								// }
 
 								IProject project = javaPage.getNewJavaProject()
 										.getResource().getProject();
@@ -85,7 +77,7 @@ public class NewStormTopoloyProjectWizard extends Wizard implements
 
 								project.setPersistentProperty(
 										new QualifiedName(Activator.PLUGIN_ID,
-												"hadoop.runtime.path"),
+												"storm.runtime.path"),
 										firstPage.currentPath);
 								project.setDescription(description,
 										new NullProgressMonitor());
@@ -103,23 +95,18 @@ public class NewStormTopoloyProjectWizard extends Wizard implements
 								BasicNewProjectResourceWizard
 										.updatePerspective(config);
 							} catch (CoreException e) {
-								// TODO Auto-generated catch block
 								log.log(Level.SEVERE, "CoreException thrown.",
 										e);
 							} catch (InvocationTargetException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}
 					}, null);
 		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

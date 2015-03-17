@@ -34,7 +34,7 @@ public class StormFirstPage extends WizardNewProjectCreationPage implements
 	public String currentPath;
 
 	public StormFirstPage() {
-		super("New Storm Topology Project");
+		super("New Apache Storm Topology Project");
 		setImageDescriptor(ImageLibrary.get("wizard.topology.project.new"));
 	}
 
@@ -42,12 +42,12 @@ public class StormFirstPage extends WizardNewProjectCreationPage implements
 	public void createControl(Composite parent) {
 		super.createControl(parent);
 
-		setTitle("Storm Topology Project");
-		setDescription("Create a Storm Topology Project.");
+		setTitle("Apache Storm Topology Project");
+		setDescription("Create a Apache Storm Topology Project.");
 
 		Group group = new Group((Composite) getControl(), SWT.NONE);
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		group.setText("Storm Topology Library Installation Path");
+		group.setText("Apache Storm Topology Library Installation Path");
 		GridLayout layout = new GridLayout(3, true);
 		layout.marginLeft = convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN);
 		layout.marginRight = convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN);
@@ -62,7 +62,7 @@ public class StormFirstPage extends WizardNewProjectCreationPage implements
 		workspaceStorm.setLayoutData(d);
 		workspaceStorm.setSelection(true);
 
-		updateHadoopDirLabelFromPreferences();
+		updateStormDirLabelFromPreferences();
 
 		openPreferences = new Link(group, SWT.NONE);
 		openPreferences
@@ -98,19 +98,19 @@ public class StormFirstPage extends WizardNewProjectCreationPage implements
 
 	@Override
 	public boolean isPageComplete() {
-		boolean validHadoop = validateStormLocation();
+		boolean validStorm = validateStormLocation();
 
-		if (!validHadoop && isCurrentPage()) {
+		if (!validStorm && isCurrentPage()) {
 			setErrorMessage("Invalid Apache Storm Runtime specified; please click 'Configure Apache Storm install directory' or fill in library location input field");
 		} else {
 			setErrorMessage(null);
 		}
 
-		return super.isPageComplete() && validHadoop;
+		return super.isPageComplete() && validStorm;
 	}
 
 	private boolean validateStormLocation() {
-		FilenameFilter gotHadoopJar = new FilenameFilter() {
+		FilenameFilter gotStormJar = new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return true;
 			}
@@ -119,19 +119,19 @@ public class StormFirstPage extends WizardNewProjectCreationPage implements
 		if (workspaceStorm.getSelection()) {
 			this.currentPath = path;
 			return new Path(path).toFile().exists()
-					&& (new Path(path).toFile().list(gotHadoopJar).length > 0);
+					&& (new Path(path).toFile().list(gotStormJar).length > 0);
 		} else {
 			this.currentPath = location.getText();
 			File file = new Path(location.getText()).toFile();
 			return file.exists()
 					&& (new Path(location.getText()).toFile()
-							.list(gotHadoopJar).length > 0);
+							.list(gotStormJar).length > 0);
 		}
 	}
 
 	public static final String P_PATH = "pathPreference";
 
-	private void updateHadoopDirLabelFromPreferences() {
+	private void updateStormDirLabelFromPreferences() {
 		path = Activator.getDefault().getPreferenceStore().getString(P_PATH);
 
 		if ((path != null) && (path.length() > 0)) {
@@ -149,7 +149,7 @@ public class StormFirstPage extends WizardNewProjectCreationPage implements
 		if (e.getSource() == openPreferences) {
 			PreferenceManager manager = new PreferenceManager();
 			manager.addToRoot(new PreferenceNode(
-					"Hadoop Installation Directory",
+					"Apache Storm Installation Directory",
 					new StormTopologyPreferencePage()));
 			PreferenceDialog dialog = new PreferenceDialog(this.getShell(),
 					manager);
@@ -158,18 +158,18 @@ public class StormFirstPage extends WizardNewProjectCreationPage implements
 			dialog.setBlockOnOpen(true);
 			dialog.open();
 
-			updateHadoopDirLabelFromPreferences();
+			updateStormDirLabelFromPreferences();
 		} else if (e.getSource() == browse) {
 			DirectoryDialog dialog = new DirectoryDialog(this.getShell());
 			dialog.setMessage("Select a storm installation, containing storm-core-*.jar");
-			dialog.setText("Select Storm Installation Directory");
+			dialog.setText("Select Apache Storm Installation Directory");
 			String directory = dialog.open();
 
 			if (directory != null) {
 				location.setText(directory);
 
 				if (!validateStormLocation()) {
-					setErrorMessage("No Storm jar found in specified directory");
+					setErrorMessage("No Apache Storm jar found in specified directory");
 				} else {
 					setErrorMessage(null);
 				}
