@@ -11,6 +11,10 @@ import org.eclipse.ui.IWorkbenchWizard;
 public class NewStormTopoloyProjectWizard extends Wizard implements
 		IWorkbenchWizard, IExecutableExtension {
 
+	public NewStormTopoloyProjectWizard() {
+		setWindowTitle("New Storm Topology Project Wizard");
+	}
+
 	@Override
 	public boolean performFinish() {
 		// TODO Auto-generated method stub

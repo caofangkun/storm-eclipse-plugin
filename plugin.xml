@@ -23,7 +23,7 @@
             class="org.apache.storm.eclipse.NewStormTopoloyProjectWizard"
             finalPerspective="org.apache.storm.eclipse.Perspective"
             hasPages="true"
-            icon="resources/Elephant16x16.gif"
+            icon="icons/alt_window16.gif"
             id="org.apache.storm.eclipse.NewProjectWizard"
             name="Storm Topology Project"
             preferredPerspectives="org.apache.storm.eclipse.Perspective"
@@ -31,16 +31,16 @@
       <wizard
             category="org.apache.storm.eclipse.category"
             class="org.apache.storm.eclipse.NewSpoutWizard"
-            icon="resources/mapper16.png"
+            icon="icons/alt_window16.gif"
             id="org.apache.storm.eclipse.NewSpoutWizard"
             name="Spout"
             project="false"/>
       <wizard
             category="org.apache.storm.eclipse.category"
             class="org.apache.storm.eclipse.NewBoltWizard"
-            icon="resources/reducer16.png"
+            icon="icons/alt_window16.gif"
             id="org.apache.storm.eclipse.NewBoltWizard"
-            name="Reducer"
+            name="Bolt"
             project="false"/>
       <category
             id="org.apache.storm.eclipse.category"
@@ -51,7 +51,7 @@
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">
       <launchConfigurationTypeImage
             configTypeID="org.apache.storm.eclipse.launch.Local"
-            icon="resources/elephantblue16x16.gif"
+            icon="icons/alt_window16.gif"
             id="Hadouken.launchConfigurationTypeImage1"/>
    </extension>
 
@@ -69,7 +69,7 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             class="org.apache.storm.eclipse.StormPerspectiveFactory"
-            icon="resources/elephantblue16x16.gif"
+            icon="icons/alt_window16.gif"
             id="org.apache.storm.eclipse.Perspective"
             name="Spout/Bolt"/>
    </extension>
@@ -79,7 +79,7 @@
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
             class="org.apache.storm.eclipse.launch.StormApplicationLaunchShortcut"
-            icon="resources/elephantblue16x16.gif"
+            icon="icons/alt_window16.gif"
             id="org.apache.storm.eclipse.launch.shortcut"
             label="Run on Storm"
             modes="run">

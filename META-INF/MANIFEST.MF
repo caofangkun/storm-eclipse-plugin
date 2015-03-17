@@ -15,7 +15,11 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text,
  org.eclipse.ui.editors,
  org.eclipse.debug.ui;bundle-version="3.10.2",
- org.eclipse.jdt.debug.ui;bundle-version="3.6.300"
+ org.eclipse.jdt.debug.ui;bundle-version="3.6.300",
+ org.eclipse.ui.cheatsheets;bundle-version="3.4.200",
+ org.eclipse.jdt.ui;bundle-version="3.10.2",
+ org.eclipse.ui.console;bundle-version="3.5.300",
+ org.eclipse.wst.jsdt.debug.ui;bundle-version="1.0.400"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Apache Storm
