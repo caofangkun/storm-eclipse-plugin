@@ -16,44 +16,21 @@ import org.osgi.framework.Bundle;
 public class ImageLibrary {
 	private final Bundle bundle = Activator.getDefault().getBundle();
 
-	/**
-	 * Singleton instance
-	 */
 	private static volatile ImageLibrary instance = null;
 
 	private ISharedImages sharedImages = PlatformUI.getWorkbench()
 			.getSharedImages();
 
-	/**
-	 * Where resources (icons, images...) are available in the Bundle
-	 */
-	private static final String RESOURCE_DIR = "resources/";
+	private static final String RESOURCE_DIR = "icons/";
 
-	/**
-	 * Public access to image descriptors
-	 * 
-	 * @param name
-	 * @return the image descriptor
-	 */
 	public static ImageDescriptor get(String name) {
 		return getInstance().getImageDescriptorByName(name);
 	}
 
-	/**
-	 * Public access to images
-	 * 
-	 * @param name
-	 * @return the image
-	 */
 	public static Image getImage(String name) {
 		return getInstance().getImageByName(name);
 	}
 
-	/**
-	 * Singleton access
-	 * 
-	 * @return the Image library
-	 */
 	public static ImageLibrary getInstance() {
 		if (instance == null) {
 			synchronized (ImageLibrary.class) {
@@ -64,93 +41,37 @@ public class ImageLibrary {
 		return instance;
 	}
 
-	/**
-	 * Map of registered resources (ImageDescriptor and Image)
-	 */
 	private Map<String, ImageDescriptor> descMap = new HashMap<String, ImageDescriptor>();
 
 	private Map<String, Image> imageMap = new HashMap<String, Image>();
 
-	/**
-	 * Image library constructor: put image definitions here.
-	 */
 	private ImageLibrary() {
-		/*
-		 * Servers view
-		 */
-		newImage("server.view.location.entry", "Elephant-24x24.png");
-		newImage("server.view.job.entry", "job.gif");
-		newImage("server.view.action.location.new", "location-new-16x16.png");
-		newImage("server.view.action.location.edit", "location-edit-16x16.png");
+		newImage("server.view.location.entry", "alt_window16.gif");
+		newImage("server.view.job.entry", "alt_window16.gif");
+		newImage("server.view.action.location.new", "alt_window16.gif");
+		newImage("server.view.action.location.edit", "alt_window16.gif");
 		newSharedImage("server.view.action.delete",
 				ISharedImages.IMG_TOOL_DELETE);
 
-		/*
-		 * DFS Browser
-		 */
-		newImage("dfs.browser.root.entry", "files.gif");
-		newImage("dfs.browser.location.entry", "Elephant-16x16.png");
-		newSharedImage("dfs.browser.folder.entry", ISharedImages.IMG_OBJ_FOLDER);
-		newSharedImage("dfs.browser.file.entry", ISharedImages.IMG_OBJ_FILE);
-		// DFS files in editor
-		newSharedImage("dfs.file.editor", ISharedImages.IMG_OBJ_FILE);
-		// Actions
-		newImage("dfs.browser.action.mkdir", "new-folder.png");
-		newImage("dfs.browser.action.download", "download.png");
-		newImage("dfs.browser.action.upload_files", "upload.png");
-		newImage("dfs.browser.action.upload_dir", "upload.png");
-		newSharedImage("dfs.browser.action.delete",
-				ISharedImages.IMG_TOOL_DELETE);
-		newImage("dfs.browser.action.refresh", "refresh.png");
-
-		/*
-		 * Wizards
-		 */
-		newImage("wizard.spout.new", "mapwiz.png");
-		newImage("wizard.bolt.new", "reducewiz.png");
-		newImage("wizard.topology.project.new", "projwiz.png");
+		newImage("wizard.spout.new", "alt_window16.gif");
+		newImage("wizard.bolt.new", "alt_window16.gif");
+		newImage("wizard.topology.project.new", "alt_window16.gif");
 	}
 
-	/**
-	 * Accessor to images
-	 * 
-	 * @param name
-	 * @return
-	 */
+	
 	private ImageDescriptor getImageDescriptorByName(String name) {
 		return this.descMap.get(name);
 	}
 
-	/**
-	 * Accessor to images
-	 * 
-	 * @param name
-	 * @return
-	 */
 	private Image getImageByName(String name) {
 		return this.imageMap.get(name);
 	}
 
-	/**
-	 * Access to platform shared images
-	 * 
-	 * @param name
-	 * @return
-	 */
 	private ImageDescriptor getSharedByName(String name) {
 		return sharedImages.getImageDescriptor(name);
 	}
 
-	/**
-	 * Load and register a new image. If the image resource does not exist or
-	 * fails to load, a default "error" resource is supplied.
-	 * 
-	 * @param name
-	 *            name of the image
-	 * @param filename
-	 *            name of the file containing the image
-	 * @return whether the image has correctly been loaded
-	 */
+	
 	private boolean newImage(String name, String filename) {
 		ImageDescriptor id;
 		boolean success;
@@ -165,7 +86,6 @@ public class ImageLibrary {
 
 			e.printStackTrace();
 			id = ImageDescriptor.getMissingImageDescriptor();
-			// id = getSharedByName(ISharedImages.IMG_OBJS_ERROR_TSK);
 			success = false;
 		}
 
@@ -175,24 +95,13 @@ public class ImageLibrary {
 		return success;
 	}
 
-	/**
-	 * Register an image from the workspace shared image pool. If the image
-	 * resource does not exist or fails to load, a default "error" resource is
-	 * supplied.
-	 * 
-	 * @param name
-	 *            name of the image
-	 * @param sharedName
-	 *            name of the shared image ({@link ISharedImages})
-	 * @return whether the image has correctly been loaded
-	 */
+	
 	private boolean newSharedImage(String name, String sharedName) {
 		boolean success = true;
 		ImageDescriptor id = getSharedByName(sharedName);
 
 		if (id == null) {
 			id = ImageDescriptor.getMissingImageDescriptor();
-			// id = getSharedByName(ISharedImages.IMG_OBJS_ERROR_TSK);
 			success = false;
 		}
 
@@ -202,17 +111,6 @@ public class ImageLibrary {
 		return success;
 	}
 
-	/**
-	 * Register an image from the workspace shared image pool. If the image
-	 * resource does not exist or fails to load, a default "error" resource is
-	 * supplied.
-	 * 
-	 * @param name
-	 *            name of the image
-	 * @param sharedName
-	 *            name of the shared image ({@link ISharedImages})
-	 * @return whether the image has correctly been loaded
-	 */
 	private boolean newPluginImage(String name, String pluginId, String filename) {
 
 		boolean success = true;
@@ -221,7 +119,6 @@ public class ImageLibrary {
 
 		if (id == null) {
 			id = ImageDescriptor.getMissingImageDescriptor();
-			// id = getSharedByName(ISharedImages.IMG_OBJS_ERROR_TSK);
 			success = false;
 		}
 
