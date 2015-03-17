@@ -75,14 +75,14 @@ public class NewSpoutWizard extends NewElementWizard implements INewWizard,
 			super.createTypeMembers(newType, imports, monitor);
 			imports.addImport("backtype.storm.topology.base.BaseRichSpout");
 			newType.createMethod(
-					"public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {\n\n}\n",
+					"open(Map conf, TopologyContext context, SpoutOutputCollector collector) {\n\n}\n",
 					null, false, monitor);
 
-			newType.createMethod("public void execute(Tuple input) {\n\n}\n",
-					null, false, monitor);
+			newType.createMethod("public void nextTuple() {\n\n}\n", null,
+					false, monitor);
 
 			newType.createMethod(
-					" public void declareOutputFields(OutputFieldsDeclarer declarer) {\n\n}\n",
+					"public void declareOutputFields(OutputFieldsDeclarer declarer) {\n\n}\n",
 					null, false, monitor);
 
 		}

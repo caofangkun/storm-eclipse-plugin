@@ -1,159 +1,152 @@
 package org.apache.storm.eclipse;
 
-import java.lang.reflect.InvocationTargetException;
-
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.internal.ui.wizards.NewElementWizard;
+import org.eclipse.jdt.ui.wizards.NewTypeWizardPage;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.IWizardContainer;
-import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
-public class NewBoltWizard implements INewWizard,
-IRunnableWithProgress{
+public class NewBoltWizard extends NewElementWizard implements INewWizard,
+		IRunnableWithProgress {
+	private Page page;
 
-	@Override
-	public void init(IWorkbench arg0, IStructuredSelection arg1) {
-		// TODO Auto-generated method stub
-		
+	public NewBoltWizard() {
+		setWindowTitle("New Bolt");
+	}
+
+	public void run(IProgressMonitor monitor) {
+		try {
+			page.createType(monitor);
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
-	public void addPages() {
-		// TODO Auto-generated method stub
-		
+	public void init(IWorkbench workbench, IStructuredSelection selection) {
+		super.init(workbench, selection);
+
+		page = new Page();
+		addPage(page);
+		page.setSelection(selection);
 	}
 
-	@Override
-	public boolean canFinish() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public static class Page extends NewTypeWizardPage {
+		private Button isCreateMapMethod;
 
-	@Override
-	public void createPageControls(Composite arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+		public Page() {
+			super(true, "Spout");
 
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-		
-	}
+			setTitle("Spout");
+			setDescription("Create a new Spout implementation.");
+			setImageDescriptor(ImageLibrary.get("wizard.bolt.new"));
+		}
 
-	@Override
-	public IWizardContainer getContainer() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		public void setSelection(IStructuredSelection selection) {
+			initContainerPage(getInitialJavaElement(selection));
+			initTypePage(getInitialJavaElement(selection));
+		}
 
-	@Override
-	public Image getDefaultPageImage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		@Override
+		public void createType(IProgressMonitor monitor) throws CoreException,
+				InterruptedException {
+			super.createType(monitor);
+		}
 
-	@Override
-	public IDialogSettings getDialogSettings() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		@Override
+		protected void createTypeMembers(IType newType, ImportsManager imports,
+				IProgressMonitor monitor) throws CoreException {
+			super.createTypeMembers(newType, imports, monitor);
+			imports.addImport("backtype.storm.topology.base.BaseRichBolt");
+			newType.createMethod(
+					"public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {\n\n}\n",
+					null, false, monitor);
 
-	@Override
-	public IWizardPage getNextPage(IWizardPage arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+			newType.createMethod("public void execute(Tuple input) {\n\n}\n",
+					null, false, monitor);
 
-	@Override
-	public IWizardPage getPage(String arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+			newType.createMethod(
+					"public void declareOutputFields(OutputFieldsDeclarer declarer) {\n\n}\n",
+					null, false, monitor);
 
-	@Override
-	public int getPageCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+		}
 
-	@Override
-	public IWizardPage[] getPages() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		public void createControl(Composite parent) {
+			// super.createControl(parent);
 
-	@Override
-	public IWizardPage getPreviousPage(IWizardPage arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+			initializeDialogUnits(parent);
+			Composite composite = new Composite(parent, SWT.NONE);
+			GridLayout layout = new GridLayout();
+			layout.numColumns = 4;
+			composite.setLayout(layout);
 
-	@Override
-	public IWizardPage getStartingPage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+			createContainerControls(composite, 4);
+			createPackageControls(composite, 4);
+			createSeparator(composite, 4);
+			createTypeNameControls(composite, 4);
+			createSuperClassControls(composite, 4);
+			createSuperInterfacesControls(composite, 4);
+			// createSeparator(composite, 4);
 
-	@Override
-	public RGB getTitleBarColor() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+			setControl(composite);
 
-	@Override
-	public String getWindowTitle() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+			setSuperClass("backtype.storm.topology.base.BaseRichSpout", true);
 
-	@Override
-	public boolean isHelpAvailable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+			setFocus();
+			validate();
+		}
 
-	@Override
-	public boolean needsPreviousAndNextButtons() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+		@Override
+		protected void handleFieldChanged(String fieldName) {
+			super.handleFieldChanged(fieldName);
 
-	@Override
-	public boolean needsProgressMonitor() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+			validate();
+		}
 
-	@Override
-	public boolean performCancel() {
-		// TODO Auto-generated method stub
-		return false;
+		private void validate() {
+			updateStatus(new IStatus[] { fContainerStatus, fPackageStatus,
+					fTypeNameStatus, fSuperClassStatus, fSuperInterfacesStatus });
+		}
 	}
 
 	@Override
 	public boolean performFinish() {
-		// TODO Auto-generated method stub
-		return false;
+		if (super.performFinish()) {
+			if (getCreatedElement() != null) {
+				openResource((IFile) page.getModifiedResource());
+				selectAndReveal(page.getModifiedResource());
+			}
+
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
-	public void setContainer(IWizardContainer arg0) {
-		// TODO Auto-generated method stub
-		
+	protected void finishPage(IProgressMonitor monitor)
+			throws InterruptedException, CoreException {
+		this.run(monitor);
 	}
 
 	@Override
-	public void run(IProgressMonitor arg0) throws InvocationTargetException,
-			InterruptedException {
-		// TODO Auto-generated method stub
-		
+	public IJavaElement getCreatedElement() {
+		return page.getCreatedType().getPrimaryElement();
 	}
 
 }
