@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="org.apache.storm.eclipse.Nature"
+         name="Storm Topology Nature"
+         point="org.eclipse.core.resources.natures">
+        <runtime>
+         <run class="org.apache.storm.eclipse.StormTopologyNature"/>
+      </runtime>
+   </extension>
+   
+   <extension 
+         point="org.eclipse.ui.ide.projectNatureImages">
+   </extension>
+   
+      <!-- Wizards: new Spout, Bolt  -->
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <primaryWizard id="org.apache.storm.eclipse.NewProjectWizard"/> 
+      <wizard
+            category="org.apache.storm.eclipse.category"
+            class="org.apache.storm.eclipse.NewStormTopoloyProjectWizard"
+            finalPerspective="org.apache.storm.eclipse.Perspective"
+            hasPages="true"
+            icon="resources/Elephant16x16.gif"
+            id="org.apache.storm.eclipse.NewProjectWizard"
+            name="Storm Topology Project"
+            preferredPerspectives="org.apache.storm.eclipse.Perspective"
+            project="true"/>
+      <wizard
+            category="org.apache.storm.eclipse.category"
+            class="org.apache.storm.eclipse.NewSpoutWizard"
+            icon="resources/mapper16.png"
+            id="org.apache.storm.eclipse.NewSpoutWizard"
+            name="Spout"
+            project="false"/>
+      <wizard
+            category="org.apache.storm.eclipse.category"
+            class="org.apache.storm.eclipse.NewBoltWizard"
+            icon="resources/reducer16.png"
+            id="org.apache.storm.eclipse.NewBoltWizard"
+            name="Reducer"
+            project="false"/>
+      <category
+            id="org.apache.storm.eclipse.category"
+            name="Storm Topology"/>
+   </extension>
+   
+      <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.apache.storm.eclipse.launch.Local"
+            icon="resources/elephantblue16x16.gif"
+            id="Hadouken.launchConfigurationTypeImage1"/>
+   </extension>
+
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.apache.storm.eclipse.launch.StartStormLaunchTabGroup"
+            id="org.apache.storm.eclipse.launch.StartStormLaunchTabGroup"
+            type="org.apache.storm.eclipse.launch.StartServer"/>
+     
+   </extension>
+   
+      <!-- Perspective: Spout/Bolt -->
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.apache.storm.eclipse.StormPerspectiveFactory"
+            icon="resources/elephantblue16x16.gif"
+            id="org.apache.storm.eclipse.Perspective"
+            name="Spout/Bolt"/>
+   </extension>
+   
+    <!-- Run on Storm action -->
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="org.apache.storm.eclipse.launch.StormApplicationLaunchShortcut"
+            icon="resources/elephantblue16x16.gif"
+            id="org.apache.storm.eclipse.launch.shortcut"
+            label="Run on Storm"
+            modes="run">
+         <contextualLaunch>
+
+           <enablement>
+             <with variable="selection">
+               <count value="1"/>
+               <iterate>
+                <or>
+               	  <test property="org.eclipse.jdt.launching.hasMain"/>
+               	  <and>
+               	     <test property="org.eclipse.jdt.launching.isContainer"/>
+               	     <test property="org.eclipse.jdt.launching.hasProjectNature" args="org.eclipse.jdt.core.javanature"/>
+               	     <test property="org.eclipse.jdt.launching.hasProjectNature" args="org.apache.storm.eclipse.Nature"/>               	     
+               	  </and>
+               	</or>
+               </iterate>
+               </with>
+           </enablement>
+  		 </contextualLaunch>
+         <perspective id="org.apache.storm.eclipse.Perspective"/>
+      </shortcut>
+   </extension>
+   
+      <!-- Preferences -->
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.apache.storm.eclipse.preferences.StormTopologyPreferencePage"
+            id="org.apache.storm.eclipse.preferences.StormTopologyPreferencePage"
+            name="Storm Topology"/>
+   </extension>
+
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="org.apache.storm.eclipse.preferences.PreferenceInitializer"/>
+   </extension>
+
+</plugin>
