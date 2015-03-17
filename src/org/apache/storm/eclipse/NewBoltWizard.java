@@ -50,10 +50,10 @@ public class NewBoltWizard extends NewElementWizard implements INewWizard,
 		private Button isCreateMapMethod;
 
 		public Page() {
-			super(true, "Spout");
+			super(true, "Bolt");
 
-			setTitle("Spout");
-			setDescription("Create a new Spout implementation.");
+			setTitle("Bolt");
+			setDescription("Create a new Bolt implementation.");
 			setImageDescriptor(ImageLibrary.get("wizard.bolt.new"));
 		}
 
@@ -105,7 +105,7 @@ public class NewBoltWizard extends NewElementWizard implements INewWizard,
 
 			setControl(composite);
 
-			setSuperClass("backtype.storm.topology.base.BaseRichSpout", true);
+			setSuperClass("backtype.storm.topology.base.BaseRichBolt", true);
 
 			setFocus();
 			validate();
