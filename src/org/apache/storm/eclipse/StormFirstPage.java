@@ -124,8 +124,7 @@ public class StormFirstPage extends WizardNewProjectCreationPage implements
 			this.currentPath = location.getText();
 			File file = new Path(location.getText()).toFile();
 			return file.exists()
-					&& (new Path(location.getText()).toFile()
-							.list(gotStormJar).length > 0);
+					&& (new Path(location.getText()).toFile().list(gotStormJar).length > 0);
 		}
 	}
 

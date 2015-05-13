@@ -4,22 +4,21 @@ Bundle-Name: Storm Topology Tools for Eclipse
 Bundle-SymbolicName: org.apache.storm.eclipse;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.apache.storm.eclipse.Activator
-Require-Bundle: org.eclipse.ui,
+Require-Bundle:  org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.ui.ide,
- org.eclipse.jdt.launching;bundle-version="3.7.102",
- org.eclipse.debug.core;bundle-version="3.9.1",
- org.eclipse.jdt;bundle-version="3.10.1",
- org.eclipse.jdt.core;bundle-version="3.10.2",
+ org.eclipse.jdt.launching;bundle-version="3.6.100",
+ org.eclipse.debug.core;bundle-version="3.7.100",
+ org.eclipse.jdt;bundle-version="3.8.0",
+ org.eclipse.jdt.core;bundle-version="3.8.2",
  org.eclipse.jface.text,
  org.eclipse.ui.editors,
- org.eclipse.debug.ui;bundle-version="3.10.2",
- org.eclipse.jdt.debug.ui;bundle-version="3.6.300",
+ org.eclipse.debug.ui;bundle-version="3.8.1",
+ org.eclipse.jdt.debug.ui;bundle-version="3.6.100",
  org.eclipse.ui.cheatsheets;bundle-version="3.4.200",
- org.eclipse.jdt.ui;bundle-version="3.10.2",
- org.eclipse.ui.console;bundle-version="3.5.300",
- org.eclipse.wst.jsdt.debug.ui;bundle-version="1.0.400"
+ org.eclipse.jdt.ui;bundle-version="3.8.1",
+ org.eclipse.ui.console;bundle-version="3.5.100"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Apache Storm

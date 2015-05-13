@@ -37,17 +37,16 @@ public class NewStormTopoloyProjectWizard extends Wizard implements
 	public NewStormTopoloyProjectWizard() {
 		setWindowTitle("New Storm Topology Project Wizard");
 	}
-	
-	  @Override
-	  public void addPages() {
 
-	    firstPage = new StormFirstPage();
-	    javaPage =
-	        new NewJavaProjectWizardPage(ResourcesPlugin.getWorkspace()
-	            .getRoot(), firstPage);
-	    addPage(firstPage);
-	    addPage(javaPage);
-	  }
+	@Override
+	public void addPages() {
+
+		firstPage = new StormFirstPage();
+		javaPage = new NewJavaProjectWizardPage(ResourcesPlugin.getWorkspace()
+				.getRoot(), firstPage);
+		addPage(firstPage);
+		addPage(javaPage);
+	}
 
 	@Override
 	public boolean performFinish() {
@@ -56,7 +55,8 @@ public class NewStormTopoloyProjectWizard extends Wizard implements
 					.runInUI(this.getContainer(), new IRunnableWithProgress() {
 						public void run(IProgressMonitor monitor) {
 							try {
-								monitor.beginTask("Create Apache Storm Project", 300);
+								monitor.beginTask(
+										"Create Apache Storm Project", 300);
 
 								javaPage.getRunnable().run(
 										new SubProgressMonitor(monitor, 100));
