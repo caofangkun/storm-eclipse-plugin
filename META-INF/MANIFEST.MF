@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Storm Topology Tools for Eclipse
-Bundle-SymbolicName: org.apache.storm.eclipse;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: storm-eclipse-plugin;singleton:=true
+Bundle-Version: 1.0.0
 Bundle-Activator: org.apache.storm.eclipse.Activator
 Bundle-Vendor: Apache Storm
 Require-Bundle: org.eclipse.ui,
