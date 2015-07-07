@@ -17,11 +17,45 @@
 	<artifactId>storm-eclipse-plugin</artifactId>
 	<packaging>eclipse-plugin</packaging>
 	<name>storm-eclipse-plugin</name>
+	<description>provide eclipse plugin for debugging user topology running on Apache Storm, submit topologies and monitor their execution</description>
 	<version>1.0.0</version>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>caofangkun</id>
+			<name>Kun Cao</name>
+			<email>caofangkun@gmail.com</email>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:https://github.com/caofangkun/storm-eclipse-plugin</connection>
+		<developerConnection>scm:git:https://github.com/caofangkun/storm-eclipse-plugin</developerConnection>
+		<url>https://github.com/caofangkun/storm-eclipse-plugin</url>
+		<tag>HEAD</tag>
+	</scm>
+
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<tycho-version>0.22.0</tycho-version>
+		<tycho.version>0.22.0</tycho.version>
+		<storm.version>0.11.0</storm.version>
 	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.github.caofangkun</groupId>
+			<artifactId>storm-core-java-api</artifactId>
+			<version>${storm.version}</version>
+		</dependency>
+	</dependencies>
 
 	<repositories>
 		<repository>
@@ -47,13 +81,13 @@
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>
-				<version>${tycho-version}</version>
+				<version>${tycho.version}</version>
 				<extensions>true</extensions>
 			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>
-				<version>${tycho-version}</version>
+				<version>${tycho.version}</version>
 				<configuration>
 					<environments>
 						<environment>

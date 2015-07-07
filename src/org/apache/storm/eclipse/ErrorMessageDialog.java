@@ -21,9 +21,6 @@ package org.apache.storm.eclipse;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 
-/**
- * Error dialog helper
- */
 public class ErrorMessageDialog {
 
   public static void display(final String title, final String message) {

@@ -25,125 +25,117 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
 public class NewStormTopoloyProjectWizard extends Wizard implements
-		IWorkbenchWizard, IExecutableExtension {
-	static Logger log = Logger.getLogger(NewStormTopoloyProjectWizard.class
-			.getName());
-	private StormFirstPage firstPage;
+    IWorkbenchWizard, IExecutableExtension {
+  static Logger log = Logger.getLogger(NewStormTopoloyProjectWizard.class
+      .getName());
+  private StormFirstPage firstPage;
 
-	private NewJavaProjectWizardPage javaPage;
+  private NewJavaProjectWizardPage javaPage;
 
-	private IConfigurationElement config;
+  private IConfigurationElement config;
 
-	public NewStormTopoloyProjectWizard() {
-		setWindowTitle("New Storm Topology Project Wizard");
-	}
+  public NewStormTopoloyProjectWizard() {
+    setWindowTitle("New Storm Topology Project Wizard");
+  }
 
-	@Override
-	public void addPages() {
+  @Override
+  public void addPages() {
 
-		firstPage = new StormFirstPage();
-		javaPage = new NewJavaProjectWizardPage(ResourcesPlugin.getWorkspace()
-				.getRoot(), firstPage);
-		addPage(firstPage);
-		addPage(javaPage);
-	}
+    firstPage = new StormFirstPage();
+    javaPage =
+        new NewJavaProjectWizardPage(ResourcesPlugin.getWorkspace().getRoot(),
+            firstPage);
+    addPage(firstPage);
+    addPage(javaPage);
+  }
 
-	@Override
-	public boolean performFinish() {
-		try {
-			PlatformUI.getWorkbench().getProgressService()
-					.runInUI(this.getContainer(), new IRunnableWithProgress() {
-						public void run(IProgressMonitor monitor) {
-							try {
-								monitor.beginTask(
-										"Create Apache Storm Project", 300);
+  @Override
+  public boolean performFinish() {
+    try {
+      PlatformUI.getWorkbench().getProgressService()
+          .runInUI(this.getContainer(), new IRunnableWithProgress() {
+            public void run(IProgressMonitor monitor) {
+              try {
+                monitor.beginTask("Create Apache Storm Project", 300);
 
-								javaPage.getRunnable().run(
-										new SubProgressMonitor(monitor, 100));
+                javaPage.getRunnable()
+                    .run(new SubProgressMonitor(monitor, 100));
 
-								IProject project = javaPage.getNewJavaProject()
-										.getResource().getProject();
-								IProjectDescription description = project
-										.getDescription();
-								String[] existingNatures = description
-										.getNatureIds();
-								String[] natures = new String[existingNatures.length + 1];
-								for (int i = 0; i < existingNatures.length; i++) {
-									natures[i + 1] = existingNatures[i];
-								}
+                IProject project =
+                    javaPage.getNewJavaProject().getResource().getProject();
+                IProjectDescription description = project.getDescription();
+                String[] existingNatures = description.getNatureIds();
+                String[] natures = new String[existingNatures.length + 1];
+                for (int i = 0; i < existingNatures.length; i++) {
+                  natures[i + 1] = existingNatures[i];
+                }
 
-								natures[0] = StormTopologyNature.ID;
-								description.setNatureIds(natures);
+                natures[0] = StormTopologyNature.ID;
+                description.setNatureIds(natures);
 
-								project.setPersistentProperty(
-										new QualifiedName(Activator.PLUGIN_ID,
-												"storm.runtime.path"),
-										firstPage.currentPath);
-								project.setDescription(description,
-										new NullProgressMonitor());
+                project.setPersistentProperty(new QualifiedName(
+                    Activator.PLUGIN_ID, "storm.runtime.path"),
+                    firstPage.currentPath);
+                project.setDescription(description, new NullProgressMonitor());
 
-								String[] natureIds = project.getDescription()
-										.getNatureIds();
-								for (int i = 0; i < natureIds.length; i++) {
-									log.fine("Nature id # " + i + " > "
-											+ natureIds[i]);
-								}
+                String[] natureIds = project.getDescription().getNatureIds();
+                for (int i = 0; i < natureIds.length; i++) {
+                  log.fine("Nature id # " + i + " > " + natureIds[i]);
+                }
 
-								monitor.worked(100);
-								monitor.done();
+                monitor.worked(100);
+                monitor.done();
 
-								BasicNewProjectResourceWizard
-										.updatePerspective(config);
-							} catch (CoreException e) {
-								log.log(Level.SEVERE, "CoreException thrown.",
-										e);
-							} catch (InvocationTargetException e) {
-								e.printStackTrace();
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-						}
-					}, null);
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+                BasicNewProjectResourceWizard.updatePerspective(config);
+              } catch (CoreException e) {
+                log.log(Level.SEVERE, "CoreException thrown.", e);
+              } catch (InvocationTargetException e) {
+                e.printStackTrace();
+              } catch (InterruptedException e) {
+                e.printStackTrace();
+              }
+            }
+          }, null);
+    } catch (InvocationTargetException e) {
+      e.printStackTrace();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
 
-		return true;
-	}
+    return true;
+  }
 
-	@Override
-	public void setInitializationData(IConfigurationElement config,
-			String propertyName, Object data) throws CoreException {
-		this.config = config;
-	}
+  @Override
+  public void setInitializationData(IConfigurationElement config,
+      String propertyName, Object data) throws CoreException {
+    this.config = config;
+  }
 
-	@Override
-	public void init(IWorkbench arg0, IStructuredSelection arg1) {
-		// TODO Auto-generated method stub
+  @Override
+  public void init(IWorkbench arg0, IStructuredSelection arg1) {
+    // TODO Auto-generated method stub
 
-	}
+  }
 
-	@Override
-	public boolean canFinish() {
-		return firstPage.isPageComplete() && javaPage.isPageComplete();
-	}
+  @Override
+  public boolean canFinish() {
+    return firstPage.isPageComplete() && javaPage.isPageComplete();
+  }
 
-	@Override
-	public IWizardPage getNextPage(IWizardPage page) {
-		IWizardPage answer = super.getNextPage(page);
-		if (answer == javaPage) {
-			return answer;
-		} else {
-			return answer;
-		}
-	}
+  @Override
+  public IWizardPage getNextPage(IWizardPage page) {
+    IWizardPage answer = super.getNextPage(page);
+    if (answer == javaPage) {
+      return answer;
+    } else {
+      return answer;
+    }
+  }
 
-	@Override
-	public IWizardPage getPreviousPage(IWizardPage page) {
+  @Override
+  public IWizardPage getPreviousPage(IWizardPage page) {
 
-		return super.getPreviousPage(page);
-	}
+    return super.getPreviousPage(page);
+  }
 
 }

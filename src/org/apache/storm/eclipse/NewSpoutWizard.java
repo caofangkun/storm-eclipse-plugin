@@ -18,136 +18,140 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
 public class NewSpoutWizard extends NewElementWizard implements INewWizard,
-		IRunnableWithProgress {
+    IRunnableWithProgress {
 
-	private Page page;
+  private Page page;
 
-	public NewSpoutWizard() {
-		setWindowTitle("New Spout");
-	}
+  public NewSpoutWizard() {
+    setWindowTitle("New Spout");
+  }
 
-	public void run(IProgressMonitor monitor) {
-		try {
-			page.createType(monitor);
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+  public void run(IProgressMonitor monitor) {
+    try {
+      page.createType(monitor);
+    } catch (CoreException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
 
-	@Override
-	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		super.init(workbench, selection);
+  @Override
+  public void init(IWorkbench workbench, IStructuredSelection selection) {
+    super.init(workbench, selection);
 
-		page = new Page();
-		addPage(page);
-		page.setSelection(selection);
-	}
+    page = new Page();
+    addPage(page);
+    page.setSelection(selection);
+  }
 
-	public static class Page extends NewTypeWizardPage {
-		private Button isCreateMapMethod;
+  public static class Page extends NewTypeWizardPage {
+    private Button isCreateMapMethod;
 
-		public Page() {
-			super(true, "Spout");
+    public Page() {
+      super(true, "Spout");
 
-			setTitle("Spout");
-			setDescription("Create a new Spout implementation.");
-			setImageDescriptor(ImageLibrary.get("wizard.spout.new"));
-		}
+      setTitle("Spout");
+      setDescription("Create a new Spout implementation.");
+      setImageDescriptor(ImageLibrary.get("wizard.spout.new"));
+    }
 
-		public void setSelection(IStructuredSelection selection) {
-			initContainerPage(getInitialJavaElement(selection));
-			initTypePage(getInitialJavaElement(selection));
-		}
+    public void setSelection(IStructuredSelection selection) {
+      initContainerPage(getInitialJavaElement(selection));
+      initTypePage(getInitialJavaElement(selection));
+    }
 
-		@Override
-		public void createType(IProgressMonitor monitor) throws CoreException,
-				InterruptedException {
-			super.createType(monitor);
-		}
+    @Override
+    public void createType(IProgressMonitor monitor) throws CoreException,
+        InterruptedException {
+      super.createType(monitor);
+    }
 
-		@Override
-		protected void createTypeMembers(IType newType, ImportsManager imports,
-				IProgressMonitor monitor) throws CoreException {
-			super.createTypeMembers(newType, imports, monitor);
-			imports.addImport("backtype.storm.topology.base.BaseRichSpout");
-			newType.createMethod(
-					"open(Map conf, TopologyContext context, SpoutOutputCollector collector) {\n\n}\n",
-					null, false, monitor);
+    @Override
+    protected void createTypeMembers(IType newType, ImportsManager imports,
+        IProgressMonitor monitor) throws CoreException {
+      super.createTypeMembers(newType, imports, monitor);
+      imports.addImport("backtype.storm.topology.base.BaseRichSpout");
+      newType
+          .createMethod(
+              "public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {\n\n}\n",
+              null, false, monitor);
 
-			newType.createMethod("public void nextTuple() {\n\n}\n", null,
-					false, monitor);
+      newType.createMethod("public void nextTuple() {\n\n}\n", null, false,
+          monitor);
 
-			newType.createMethod(
-					"public void declareOutputFields(OutputFieldsDeclarer declarer) {\n\n}\n",
-					null, false, monitor);
+      newType
+          .createMethod(
+              "public void declareOutputFields(OutputFieldsDeclarer declarer) {\n\n}\n",
+              null, false, monitor);
 
-		}
+      newType.createMethod("public void close()", null, false, monitor);
 
-		public void createControl(Composite parent) {
-			// super.createControl(parent);
+    }
 
-			initializeDialogUnits(parent);
-			Composite composite = new Composite(parent, SWT.NONE);
-			GridLayout layout = new GridLayout();
-			layout.numColumns = 4;
-			composite.setLayout(layout);
+    public void createControl(Composite parent) {
+      // super.createControl(parent);
 
-			createContainerControls(composite, 4);
-			createPackageControls(composite, 4);
-			createSeparator(composite, 4);
-			createTypeNameControls(composite, 4);
-			createSuperClassControls(composite, 4);
-			createSuperInterfacesControls(composite, 4);
-			// createSeparator(composite, 4);
+      initializeDialogUnits(parent);
+      Composite composite = new Composite(parent, SWT.NONE);
+      GridLayout layout = new GridLayout();
+      layout.numColumns = 4;
+      composite.setLayout(layout);
 
-			setControl(composite);
+      createContainerControls(composite, 4);
+      createPackageControls(composite, 4);
+      createSeparator(composite, 4);
+      createTypeNameControls(composite, 4);
+      createSuperClassControls(composite, 4);
+      createSuperInterfacesControls(composite, 4);
+      // createSeparator(composite, 4);
 
-			setSuperClass("backtype.storm.topology.base.BaseRichSpout", true);
+      setControl(composite);
 
-			setFocus();
-			validate();
-		}
+      setSuperClass("backtype.storm.topology.base.BaseRichSpout", true);
 
-		@Override
-		protected void handleFieldChanged(String fieldName) {
-			super.handleFieldChanged(fieldName);
+      setFocus();
+      validate();
+    }
 
-			validate();
-		}
+    @Override
+    protected void handleFieldChanged(String fieldName) {
+      super.handleFieldChanged(fieldName);
 
-		private void validate() {
-			updateStatus(new IStatus[] { fContainerStatus, fPackageStatus,
-					fTypeNameStatus, fSuperClassStatus, fSuperInterfacesStatus });
-		}
-	}
+      validate();
+    }
 
-	@Override
-	public boolean performFinish() {
-		if (super.performFinish()) {
-			if (getCreatedElement() != null) {
-				openResource((IFile) page.getModifiedResource());
-				selectAndReveal(page.getModifiedResource());
-			}
+    private void validate() {
+      updateStatus(new IStatus[] { fContainerStatus, fPackageStatus,
+          fTypeNameStatus, fSuperClassStatus, fSuperInterfacesStatus });
+    }
+  }
 
-			return true;
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean performFinish() {
+    if (super.performFinish()) {
+      if (getCreatedElement() != null) {
+        openResource((IFile) page.getModifiedResource());
+        selectAndReveal(page.getModifiedResource());
+      }
 
-	@Override
-	protected void finishPage(IProgressMonitor monitor)
-			throws InterruptedException, CoreException {
-		this.run(monitor);
-	}
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public IJavaElement getCreatedElement() {
-		return page.getCreatedType().getPrimaryElement();
-	}
+  @Override
+  protected void finishPage(IProgressMonitor monitor)
+      throws InterruptedException, CoreException {
+    this.run(monitor);
+  }
+
+  @Override
+  public IJavaElement getCreatedElement() {
+    return page.getCreatedType().getPrimaryElement();
+  }
 
 }
